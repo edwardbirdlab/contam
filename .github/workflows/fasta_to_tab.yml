@@ -1,0 +1,36 @@
+name: Convert FASTA to Tab-delimited
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '*.fasta'
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: pip install biopython
+
+    - name: Convert FASTA to Tab-delimited
+      run: |
+        for file in *.fasta; do
+          python fasta_to_tab.py "$file" "${file%.fasta}.tsv"
+        done
+
+    - name: Upload results
+      uses: actions/upload-artifact@v4
+      with:
+        name: output-tsvs
+        path: '*.tsv'
