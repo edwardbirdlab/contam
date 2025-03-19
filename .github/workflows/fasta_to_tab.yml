@@ -5,16 +5,13 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-
 jobs:
   convert:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@master
+      uses: actions/checkout@main
       with:
         persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
         fetch-depth: 0             # otherwise, you will fail to push refs to dest repo
@@ -34,6 +31,6 @@ jobs:
         done
 
     - name: Commit & Push changes
-      uses: actions-js/push@master
+      uses: actions-js/push@main
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
